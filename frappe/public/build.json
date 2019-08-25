@@ -10,7 +10,6 @@
 		"node_modules/frappe-datatable/dist/frappe-datatable.css"
 	],
 	"css/frappe-web-b4.css": [
-		"public/css/font-awesome.css",
 		"public/less/indicator.less",
 		"public/scss/website.scss"
 	],
@@ -33,11 +32,10 @@
 		"public/js/frappe/utils/number_format.js",
 		"public/js/frappe/utils/utils.js",
 		"public/js/frappe/utils/common.js",
-		"public/js/frappe/utils/jquery_plugins.js",
 		"public/js/frappe/ui/messages.js",
 		"public/js/frappe/translate.js",
 		"public/js/frappe/utils/pretty_date.js",
-		"public/js/lib/microtemplate.js",
+		"public/js/frappe/microtemplate.js",
 		"public/js/frappe/query_string.js",
 
 		"public/js/frappe/ui/dropzone.js",
@@ -146,9 +144,7 @@
 		"public/js/frappe/router_history.js",
 		"public/js/frappe/defaults.js",
 		"public/js/frappe/roles_editor.js",
-		"public/js/lib/microtemplate.js",
-
-		"public/js/legacy/handler.js",
+		"public/js/frappe/microtemplate.js",
 
 		"public/js/frappe/ui/page.html",
 		"public/js/frappe/ui/page.js",
@@ -190,7 +186,6 @@
 
 		"public/js/frappe/ui/upload.html",
 		"public/js/frappe/upload.js",
-		"public/js/integrations/gsuite.js",
 		"public/js/frappe/ui/tree.js",
 
 		"public/js/frappe/views/container.js",
@@ -199,6 +194,7 @@
 		"public/js/frappe/views/pageview.js",
 
 		"public/js/frappe/ui/toolbar/awesome_bar.js",
+		"public/js/frappe/ui/toolbar/energy_points_notifications.js",
 		"public/js/frappe/ui/toolbar/search.js",
 		"public/js/frappe/ui/toolbar/search.html",
 		"public/js/frappe/ui/toolbar/search_header.html",
@@ -277,6 +273,7 @@
 		"public/js/frappe/list/list_sidebar.js",
 		"public/js/frappe/list/list_sidebar.html",
 		"public/js/frappe/list/list_sidebar_stat.html",
+		"public/js/frappe/list/list_sidebar_group_by.js",
 		"public/js/frappe/list/list_view_permission_restrictions.html",
 
 		"public/js/frappe/views/gantt/gantt_view.js",
@@ -314,18 +311,17 @@
 	],
 	"js/web_form.min.js": [
 		"public/js/frappe/utils/datetime.js",
-		"website/js/web_form.js",
+		"public/js/frappe/web_form/webform_script.js",
 		"public/js/lib/datepicker/datepicker.min.js",
 		"public/js/lib/datepicker/datepicker.en.js"
 	],
 	"css/web_form.css": [
 		"public/less/list.less",
 		"website/css/web_form.css",
-		"public/less/quill.less",
-		"public/less/datepicker.less",
-		"public/less/awesomplete.less",
+		"public/css/octicons/octicons.css",
 		"public/less/form_grid.less",
-		"public/less/controls.less"
+		"public/less/controls.less",
+		"node_modules/frappe-datatable/dist/frappe-datatable.css"
 	],
 	"frappe/css/email.css": [
 		"public/less/email.less"

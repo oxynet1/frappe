@@ -7,7 +7,7 @@ import frappe
 from frappe import _
 import json
 from frappe.model.document import Document
-from frappe.utils import cint, get_fullname, getdate
+from frappe.utils import cint, get_fullname, getdate, get_link_to_form
 
 class EnergyPointLog(Document):
 	def validate(self):
@@ -30,10 +30,14 @@ class EnergyPointLog(Document):
 		frappe.cache().hdel('energy_points', self.user)
 		frappe.publish_realtime('update_points', after_commit=True)
 
+		if self.type != 'Review':
+			frappe.publish_realtime('energy_points_notification', after_commit=True, user=self.user)
+
 def get_alert_dict(doc):
 	alert_dict = frappe._dict()
 	owner_name = get_fullname(doc.owner)
-	doc_link = frappe.get_desk_link(doc.reference_doctype, doc.reference_name)
+	if doc.reference_doctype:
+		doc_link = get_link_to_form(doc.reference_doctype, doc.reference_name)
 	points = doc.points
 	bold_points = frappe.bold(doc.points)
 	if doc.type == 'Auto':
@@ -171,6 +175,12 @@ def get_user_energy_and_review_points(user=None, from_date=None, as_dict=True):
 
 
 @frappe.whitelist()
+def set_notification_as_seen(point_logs):
+	point_logs = frappe.parse_json(point_logs)
+	for log in point_logs:
+		frappe.db.set_value('Energy Point Log', log['name'], 'seen', 1, update_modified=False)
+
+@frappe.whitelist()
 def review(doc, points, to_user, reason, review_type='Appreciation'):
 	current_review_points = get_energy_points(frappe.session.user).review_points
 	doc = doc.as_dict() if hasattr(doc, 'as_dict') else frappe._dict(json.loads(doc))
@@ -212,6 +222,8 @@ def revert(name, reason):
 
 	if doc_to_revert.type != 'Auto':
 		frappe.throw(_('This document cannot be reverted'))
+
+	if doc_to_revert.reverted: return
 
 	doc_to_revert.reverted = 1
 	doc_to_revert.save(ignore_permissions=True)

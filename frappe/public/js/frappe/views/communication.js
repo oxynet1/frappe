@@ -253,6 +253,8 @@ frappe.views.CommunicationComposer = Class.extend({
 			$.extend(last_edited_communication, {
 				sender: me.dialog.get_value("sender"),
 				recipients: me.dialog.get_value("recipients"),
+				cc: me.dialog.get_value("cc"),
+				bcc: me.dialog.get_value("bcc"),
 				subject: me.dialog.get_value("subject"),
 				content: me.dialog.get_value("content"),
 			});
@@ -265,6 +267,8 @@ frappe.views.CommunicationComposer = Class.extend({
 					me.dialog.set_value("sender", last_edited_communication.sender || "");
 					me.dialog.set_value("subject", last_edited_communication.subject || "");
 					me.dialog.set_value("recipients", last_edited_communication.recipients || "");
+					me.dialog.set_value("cc", last_edited_communication.cc || "");
+					me.dialog.set_value("bcc", last_edited_communication.bcc || "");
 					me.dialog.set_value("content", last_edited_communication.content || "");
 				}
 			}
@@ -365,7 +369,10 @@ frappe.views.CommunicationComposer = Class.extend({
 
 		let args = {
 			folder: 'Home/Attachments',
-			on_success: attachment => this.attachments.push(attachment)
+			on_success: attachment => {
+				this.attachments.push(attachment);
+				this.render_attach();
+			}
 		};
 
 		if(this.frm) {
@@ -414,6 +421,21 @@ frappe.views.CommunicationComposer = Class.extend({
 					+		'<i class="fa fa-share" style="vertical-align: middle; margin-left: 3px;"></i>'
 					+ '</label></p>', f))
 					.appendTo(attach)
+			});
+		}
+		this.select_attachments();
+	},
+	select_attachments:function(){
+		let me = this;
+		if(me.dialog.display) {
+			let wrapper = $(me.dialog.fields_dict.select_attachments.wrapper);
+
+			let unchecked_items = wrapper.find('[data-file-name]:not(:checked)').map(function() {
+				return $(this).attr("data-file-name");
+			});
+
+			$.each(unchecked_items, function(i, filename) {
+				wrapper.find('[data-file-name="'+ filename +'"]').prop("checked", true);
 			});
 		}
 	},
@@ -478,7 +500,7 @@ frappe.views.CommunicationComposer = Class.extend({
 	},
 
 	save_as_draft: function() {
-		if (this.dialog) {
+		if (this.dialog && this.frm) {
 			try {
 				let message = this.dialog.get_value('content');
 				message = message.split(frappe.separator_element)[0];

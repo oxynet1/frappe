@@ -35,6 +35,8 @@ frappe.ui.form.Sidebar = Class.extend({
 		this.make_follow();
 
 		this.bind_events();
+		this.setup_keyboard_shortcuts();
+		this.show_auto_repeat_status();
 		frappe.ui.form.setup_user_image_event(this.frm);
 
 		this.refresh();
@@ -54,6 +56,14 @@ frappe.ui.form.Sidebar = Class.extend({
 				me.refresh_like();
 			});
 		});
+	},
+
+	setup_keyboard_shortcuts() {
+		// add assignment shortcut
+		let assignment_link = this.sidebar.find('.add-assignment');
+		frappe.ui.keys
+			.get_shortcut_group(this.page)
+			.add(assignment_link);
 	},
 
 	refresh: function() {
@@ -76,6 +86,28 @@ frappe.ui.form.Sidebar = Class.extend({
 
 			this.refresh_like();
 			frappe.ui.form.set_user_image(this.frm);
+		}
+	},
+
+	show_auto_repeat_status: function() {
+		if (this.frm.meta.allow_auto_repeat && this.frm.doc.auto_repeat) {
+			const me = this;
+			frappe.call({
+				method: "frappe.client.get_value",
+				args:{
+					doctype: "Auto Repeat",
+					filters: {
+						name: this.frm.doc.auto_repeat
+					},
+					fieldname: ["frequency"]
+				},
+				callback: function(res) {
+					me.sidebar.find(".auto-repeat-status").html(__("Repeats {0}", [res.message.frequency]));
+					me.sidebar.find(".auto-repeat-status").on("click", function(){
+						frappe.set_route("Form", "Auto Repeat", me.frm.doc.auto_repeat);
+					});
+				}
+			});
 		}
 	},
 

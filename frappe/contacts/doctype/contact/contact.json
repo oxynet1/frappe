@@ -2,13 +2,17 @@
  "allow_events_in_timeline": 1,
  "allow_import": 1,
  "allow_rename": 1,
+<<<<<<< HEAD
  "autoname": "field:pan_no",
+=======
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
  "creation": "2013-01-10 16:34:32",
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
  "field_order": [
   "contact_section",
+<<<<<<< HEAD
   "pan_no",
   "salutation",
   "first_name",
@@ -24,10 +28,22 @@
   "aadhar_card_no",
   "status",
   "dob",
+=======
+  "first_name",
+  "middle_name",
+  "last_name",
+  "email_id",
+  "user",
+  "cb00",
+  "status",
+  "salutation",
+  "designation",
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
   "gender",
   "phone",
   "mobile_no",
   "image",
+<<<<<<< HEAD
   "address_details_section",
   "col_bk_02",
   "p_address",
@@ -42,15 +58,24 @@
   "c_pin_code",
   "contact_details_section",
   "contact_detail",
+=======
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
   "contact_details",
   "is_primary_contact",
   "links",
   "more_info",
   "department",
+<<<<<<< HEAD
   "designation",
   "column_break_17",
   "unsubscribed",
   "amended_from"
+=======
+  "unsubscribed",
+  "column_break_17",
+  "source",
+  "google_contacts_description"
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
  ],
  "fields": [
   {
@@ -59,6 +84,7 @@
    "options": "fa fa-user"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:doc.type == \"Individual\"",
    "fieldname": "first_name",
    "fieldtype": "Data",
@@ -74,6 +100,20 @@
    "fieldname": "last_name",
    "fieldtype": "Data",
    "hidden": 1,
+=======
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "in_global_search": 1,
+   "label": "First Name",
+   "oldfieldname": "first_name",
+   "oldfieldtype": "Data",
+   "reqd": 1
+  },
+  {
+   "bold": 1,
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
    "label": "Last Name",
    "oldfieldname": "last_name",
    "oldfieldtype": "Data"
@@ -110,14 +150,20 @@
    "options": "Passive\nOpen\nReplied"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:doc.type == \"Individual\"",
+=======
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
    "fieldname": "salutation",
    "fieldtype": "Link",
    "label": "Salutation",
    "options": "Salutation"
   },
   {
+<<<<<<< HEAD
    "depends_on": "eval:doc.type == \"Individual\"",
+=======
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
    "fieldname": "gender",
    "fieldtype": "Link",
    "label": "Gender",
@@ -194,6 +240,7 @@
    "label": "Unsubscribed"
   },
   {
+<<<<<<< HEAD
    "fieldname": "pan_no",
    "fieldtype": "Data",
    "label": "Pan no",
@@ -201,11 +248,19 @@
   },
   {
    "depends_on": "eval:doc.type == \"Individual\"",
+=======
+   "fieldname": "source",
+   "fieldtype": "Data",
+   "label": "Source"
+  },
+  {
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
    "fieldname": "middle_name",
    "fieldtype": "Data",
    "label": "Middle Name"
   },
   {
+<<<<<<< HEAD
    "fieldname": "type",
    "fieldtype": "Select",
    "label": "Lead Type",
@@ -320,16 +375,30 @@
    "fieldname": "last_name_1",
    "fieldtype": "Data",
    "label": "Last Name"
+=======
+   "depends_on": "eval:doc.source==\"Google Contacts\"",
+   "fieldname": "google_contacts_description",
+   "fieldtype": "Small Text",
+   "label": "Google Contacts Description"
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
   }
  ],
  "icon": "fa fa-user",
  "idx": 1,
  "image_field": "image",
+<<<<<<< HEAD
  "is_submittable": 1,
  "modified": "2019-07-11 12:35:57.973643",
  "modified_by": "Administrator",
  "module": "Contacts",
  "name": "Contact",
+=======
+ "modified": "2019-06-14 20:35:45.300869",
+ "modified_by": "Administrator",
+ "module": "Contacts",
+ "name": "Contact",
+ "name_case": "Title Case",
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
  "owner": "Administrator",
  "permissions": [
   {
@@ -456,6 +525,10 @@
   }
  ],
  "sort_field": "modified",
+<<<<<<< HEAD
  "sort_order": "ASC",
  "title_field": "pan_no"
+=======
+ "sort_order": "ASC"
+>>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
 }

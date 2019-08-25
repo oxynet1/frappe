@@ -340,6 +340,7 @@ def ceil(s):
 
 def cstr(s, encoding='utf-8'):
 	return frappe.as_unicode(s, encoding)
+
 def rounded(num, precision=0):
 	"""round method for round halfs to nearest even algorithm aka banker's rounding - compatible with python3"""
 	precision = cint(precision)
@@ -354,7 +355,10 @@ def rounded(num, precision=0):
 	if not precision and decimal_part == 0.5:
 		num = floor if (floor % 2 == 0) else floor + 1
 	else:
-		num = round(num)
+		if decimal_part == 0.5:
+			num = floor + 1
+		else:
+			num = round(num)
 
 	return (num / multiplier) if precision else num
 
@@ -710,9 +714,10 @@ def get_url(uri=None, full_address=False):
 		return uri
 
 	if not host_name:
-		if hasattr(frappe.local, "request") and frappe.local.request and frappe.local.request.host:
-			protocol = 'https://' if 'https' == frappe.get_request_header('X-Forwarded-Proto', "") else 'http://'
-			host_name = protocol + frappe.local.request.host
+		request_host_name = get_host_name_from_request()
+
+		if request_host_name:
+			host_name = request_host_name
 
 		elif frappe.local.site:
 			protocol = 'http://'
@@ -748,6 +753,11 @@ def get_url(uri=None, full_address=False):
 	url = urljoin(host_name, uri) if uri else host_name
 
 	return url
+
+def get_host_name_from_request():
+	if hasattr(frappe.local, "request") and frappe.local.request and frappe.local.request.host:
+		protocol = 'https://' if 'https' == frappe.get_request_header('X-Forwarded-Proto', "") else 'http://'
+		return protocol + frappe.local.request.host
 
 def url_contains_port(url):
 	parts = url.split(':')

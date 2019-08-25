@@ -116,7 +116,6 @@ def get():
 	from frappe.desk.notifications import \
 		get_notification_info_for_boot, get_notifications
 	from frappe.boot import get_bootinfo, get_unseen_notes
-	from frappe.limits import get_limits, get_expiry_message
 
 	bootinfo = None
 	if not getattr(frappe.conf,'disable_session_cache', None):
@@ -160,9 +159,6 @@ def get():
 
 	bootinfo["setup_complete"] = cint(frappe.db.get_single_value('System Settings', 'setup_complete'))
 
-	# limits
-	bootinfo.limits = get_limits()
-	bootinfo.expiry_message = get_expiry_message()
 
 	return bootinfo
 
@@ -231,6 +227,7 @@ class Session:
 			self.insert_session_record()
 
 			# update user
+			user = frappe.get_doc("User", self.data['user'])
 			frappe.db.sql("""UPDATE `tabUser`
 				SET
 					last_login = %(now)s,
@@ -241,7 +238,8 @@ class Session:
 					'ip': frappe.local.request_ip,
 					'name': self.data['user']
 				})
-
+			user.run_notifications("before_change")
+			user.run_notifications("on_update")
 			frappe.db.commit()
 
 	def insert_session_record(self):

@@ -176,7 +176,7 @@ frappe.views.BaseList = class BaseList {
 			if (item.condition && item.condition() === false) {
 				return;
 			}
-			const $item = this.page.add_menu_item(item.label, item.action, item.standard);
+			const $item = this.page.add_menu_item(item.label, item.action, item.standard, item.shortcut);
 			if (item.class) {
 				$item && $item.addClass(item.class);
 			}
@@ -199,13 +199,21 @@ frappe.views.BaseList = class BaseList {
 	}
 
 	toggle_side_bar() {
-		this.list_sidebar.parent.toggleClass('hide');
-		this.page.current_view.find('.layout-main-section-wrapper').toggleClass('col-md-10 col-md-12');
+		let show_sidebar = JSON.parse(localStorage.show_sidebar || 'true');
+		show_sidebar = !show_sidebar;
+		localStorage.show_sidebar = show_sidebar;
+		this.show_or_hide_sidebar();
+	}
+
+	show_or_hide_sidebar() {
+		let show_sidebar = JSON.parse(localStorage.show_sidebar || 'true');
+		$(document.body).toggleClass('no-sidebar', !show_sidebar);
 	}
 
 	setup_main_section() {
 		return frappe.run_serially([
 			this.setup_list_wrapper,
+			this.show_or_hide_sidebar,
 			this.setup_filter_area,
 			this.setup_sort_selector,
 			this.setup_result_area,
@@ -551,12 +559,12 @@ class FilterArea {
 		const fields_dict = this.list_view.page.fields_dict;
 
 		if (fieldname in fields_dict) {
-			fields_dict[fieldname].set_value('');
-			return;
+			return fields_dict[fieldname].set_value('');
 		}
 
 		let filter = this.filter_list.get_filter(fieldname);
 		if (filter) filter.remove();
+		return Promise.resolve();
 	}
 
 	clear(refresh = true) {
@@ -598,7 +606,6 @@ class FilterArea {
 		}
 
 		const doctype_fields = this.list_view.meta.fields;
-
 		fields = fields.concat(doctype_fields.filter(
 			df => df.in_standard_filter &&
 				frappe.model.is_value_type(df.fieldtype)
@@ -617,12 +624,17 @@ class FilterArea {
 					options = options.join("\n");
 				}
 			}
+			let default_value = (fieldtype === 'Link') ? frappe.defaults.get_user_default(options) : null;
+			if (['__default', '__global'].includes(default_value)) {
+				default_value = null;
+			}
 			return {
 				fieldtype: fieldtype,
 				label: __(df.label),
 				options: options,
 				fieldname: df.fieldname,
 				condition: condition,
+				default: default_value,
 				onchange: () => this.refresh_list_view(),
 				ignore_link_validation: fieldtype === 'Dynamic Link'
 			};

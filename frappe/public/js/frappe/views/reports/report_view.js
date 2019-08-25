@@ -225,7 +225,11 @@ frappe.views.ReportView = class ReportView extends frappe.views.ListView {
 						// child table field
 						const [cdt, _field] = fieldname.split(':');
 						const cdt_row = Object.keys(doc)
-							.filter(key => Array.isArray(doc[key]) && doc[key][0].doctype === cdt)
+							.filter(key =>
+								Array.isArray(doc[key])
+								&& doc[key].length
+								&& doc[key][0].doctype === cdt
+							)
 							.map(key => doc[key])
 							.map(a => a[0])
 							.filter(cdoc => cdoc.name === d[cdt + ':name'])[0];
@@ -265,6 +269,7 @@ frappe.views.ReportView = class ReportView extends frappe.views.ListView {
 			checkboxColumn: true,
 			inlineFilters: true,
 			cellHeight: 35,
+			direction: frappe.utils.is_rtl() ? 'rtl' : 'ltr',
 			events: {
 				onRemoveColumn: (column) => {
 					this.remove_column_from_datatable(column);
@@ -491,6 +496,9 @@ frappe.views.ReportView = class ReportView extends frappe.views.ListView {
 			data: data,
 			type: args.chart_type,
 			colors: ['#70E078', 'light-blue', 'orange', 'red'],
+			axisOptions: {
+				shortenYAxisNumbers: 1
+			},
 
 			format_tooltip_x: value => value.doc.name,
 			format_tooltip_y:
@@ -524,9 +532,32 @@ frappe.views.ReportView = class ReportView extends frappe.views.ListView {
 				control.set_value(value);
 				return this.set_control_value(doctype, docname, fieldname, value)
 					.then((updated_doc) => {
-						const _data = this.data.find(d => d.name === updated_doc.name);
+						const _data = this.data
+							.filter(b => b.name === updated_doc.name)
+							.find(a =>
+								// child table cell
+								(doctype != updated_doc.doctype && a[doctype + ":name"] == docname)
+								|| doctype == updated_doc.doctype
+							);
+
 						for (let field in _data) {
-							_data[field] = updated_doc[field];
+							if (field.includes(':')) {
+								// child table field
+								const [cdt, _field] = field.split(':');
+								const cdt_row = Object.keys(updated_doc)
+									.filter(key =>
+										Array.isArray(updated_doc[key])
+										&& updated_doc[key].length
+										&& updated_doc[key][0].doctype === cdt
+									)
+									.map(key => updated_doc[key])[0]
+									.filter(cdoc => cdoc.name === _data[cdt + ':name'])[0];
+								if (cdt_row) {
+									_data[field] = cdt_row[_field];
+								}
+							} else {
+								_data[field] = updated_doc[field];
+							}
 						}
 					})
 					.then(() => this.refresh_charts());

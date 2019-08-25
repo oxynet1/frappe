@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import frappe
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.parser import parse
 from pytz import timezone
 from frappe.utils import add_days
@@ -30,7 +30,7 @@ def pre_process(events):
 				event_tz = events["start"]["timeZone"]
 			else:
 				event_tz = events["calendar_tz"]
-			start_dt= timezone(event_tz).localize(start_dt)
+			start_dt = timezone(event_tz).localize(start_dt)
 
 		if end_dt.tzinfo is None or end_dt.tzinfo.utcoffset(end_dt) is None:
 			if "timeZone" in events["end"]:
@@ -73,50 +73,55 @@ def get_recurrence_event_fields_value(recur_rule, starts_on):
 	for _str in recur_rule.split(";"):
 		if "RRULE:FREQ" in _str:
 			repeat_every = _str.split("=")[1]
-			if repeat_every == "DAILY": repeat_on = "Every Day"
-			elif repeat_every == "WEEKLY": repeat_on = "Every Week"
-			elif repeat_every == "MONTHLY": repeat_on = "Every Month"
-			else: repeat_on = "Every Year"
+			if repeat_every == "DAILY": repeat_on = "Daily"
+			elif repeat_every == "WEEKLY": repeat_on = "Weekly"
+			elif repeat_every == "MONTHLY": repeat_on = "Monthly"
+			else: repeat_on = "Yearly"
 		elif "UNTIL" in _str:
 			# get repeat till
-			date = datetime.strptime(_str.split("=")[1], "%Y%m%dT%H%M%SZ")
+			date = parse(_str.split("=")[1])
 			repeat_till = get_repeat_till_date(date)
 		elif "COUNT" in _str:
 			# get repeat till
-			date = datetime.strptime(starts_on, "%Y-%m-%d %H:%M:%S")
+			date = parse(starts_on)
 			repeat_till = get_repeat_till_date(date, count=_str.split("=")[1], repeat_on=repeat_on)
 		elif "BYDAY" in _str:
 			days = _str.split("=")[1]
-			if repeat_on == "DAILY":
-				repeat_days.update({
-					"sunday": 1 if "SU" in days else 0,
-					"monday": 1 if "MO" in days else 0,
-					"tuesday": 1 if "TU" in days else 0,
-					"wednesday": 1 if "WD" in days else 0,
-					"thursday": 1 if "TU" in days else 0,
-					"friday": 1 if "TU" in days else 0,
-					"saturday": 1 if "TU" in days else 0,
-				})
+			repeat_days.update({
+				"sunday": 1 if "SU" in days else 0,
+				"monday": 1 if "MO" in days else 0,
+				"tuesday": 1 if "TU" in days else 0,
+				"wednesday": 1 if "WD" in days else 0,
+				"thursday": 1 if "TH" in days else 0,
+				"friday": 1 if "FR" in days else 0,
+				"saturday": 1 if "SA" in days else 0,
+			})
+			repeat_on = "Weekly"
 
-	return {
+	recurrence = {
 		"repeat_on": repeat_on,
 		"repeat_till": repeat_till,
-		"repeat_this_event": 1,
-		"repeat_days": repeat_days
+		"repeat_this_event": 1
 	}
+
+	if repeat_days:
+		recurrence.update(repeat_days)
+
+	return recurrence
+
 
 def get_repeat_till_date(date, count=None, repeat_on=None):
 	if count:
-		if repeat_on == "Every Day":
+		if repeat_on == "Daily":
 			# add days
 			date = date + timedelta(days=int(count))
-		elif repeat_on == "Every Week":
+		elif repeat_on == "Weekly":
 			# add weeks
 			date = date + timedelta(weeks=int(count))
-		elif repeat_on == "Every Month":
+		elif repeat_on == "Monthly":
 			# add months
 			date = add_months(date, int(count))
-		elif repeat_on == "Every Year":
+		elif repeat_on == "Yearly":
 			# add years
 			date = add_months(date, int(count) * 12)
 		else:

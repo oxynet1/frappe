@@ -160,7 +160,8 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 			this.meta.track_seen ? '_seen' : null,
 			this.sort_by,
 			'enabled',
-			'disabled'
+			'disabled',
+			'color'
 		);
 
 		fields.forEach(f => this._add_field(f));
@@ -226,6 +227,7 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 		this.setup_events();
 		this.settings.onload && this.settings.onload(this);
 		this.show_restricted_list_indicator_if_applicable();
+
 	}
 
 	setup_freeze_area() {
@@ -491,7 +493,7 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 
 	get_list_row_html_skeleton(left = '', right = '') {
 		return `
-			<div class="list-row-container">
+			<div class="list-row-container" tabindex="1">
 				<div class="level list-row small">
 					<div class="level-left ellipsis">
 						${left}
@@ -653,7 +655,9 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 	}
 
 	get_count_str() {
-		const current_count = this.data.length;
+		let current_count = this.data.length;
+		let count_without_children = this.data.uniqBy(d => d.name).length;
+
 		const filters = this.get_filters_for_args();
 		const with_child_table_filter = filters.some(filter => {
 			return filter[0] !== this.doctype;
@@ -674,7 +678,10 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 			}
 		}).then(r => {
 			this.total_count = r.message.values[0][0] || current_count;
-			const str = __('{0} of {1}', [current_count, this.total_count]);
+			let str = __('{0} of {1}', [current_count, this.total_count]);
+			if (count_without_children !== current_count) {
+				str = __('{0} of {1} ({2} rows with children)', [count_without_children, this.total_count, current_count]);
+			}
 			return str;
 		});
 	}
@@ -753,6 +760,108 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 		this.setup_like();
 		this.setup_realtime_updates();
 		this.setup_action_handler();
+		this.setup_keyboard_navigation();
+	}
+
+	setup_keyboard_navigation() {
+		let focus_first_row = () => {
+			this.$result.find('.list-row-container:first').focus();
+		};
+		let focus_next = () => {
+			$(document.activeElement).next().focus();
+		};
+		let focus_prev = () => {
+			$(document.activeElement).prev().focus();
+		};
+		let list_row_focused = () => {
+			return $(document.activeElement).is('.list-row-container');
+		};
+		let check_row = ($row) => {
+			let $input = $row.find('input[type=checkbox]');
+			$input.click();
+		};
+		let get_list_row_if_focused = () =>
+			list_row_focused() ? $(document.activeElement) : null;
+
+		let is_current_page = () => this.page.wrapper.is(':visible');
+		let is_input_focused = () => $(document.activeElement).is('input');
+
+		let handle_navigation = (direction) => {
+			if (!is_current_page() || is_input_focused()) return false;
+
+			let $list_row = get_list_row_if_focused();
+			if ($list_row) {
+				direction === 'down' ? focus_next() : focus_prev();
+			} else {
+				focus_first_row();
+			}
+		};
+
+		frappe.ui.keys.add_shortcut({
+			shortcut: 'down',
+			action: () => handle_navigation('down'),
+			description: __('Navigate list down'),
+			page: this.page
+		});
+
+		frappe.ui.keys.add_shortcut({
+			shortcut: 'up',
+			action: () => handle_navigation('up'),
+			description: __('Navigate list up'),
+			page: this.page
+		});
+
+		frappe.ui.keys.add_shortcut({
+			shortcut: 'shift+down',
+			action: () => {
+				if (!is_current_page() || is_input_focused()) return false;
+				let $list_row = get_list_row_if_focused();
+				check_row($list_row);
+				focus_next();
+			},
+			description: __('Select multiple list items'),
+			page: this.page
+		});
+
+		frappe.ui.keys.add_shortcut({
+			shortcut: 'shift+up',
+			action: () => {
+				if (!is_current_page() || is_input_focused()) return false;
+				let $list_row = get_list_row_if_focused();
+				check_row($list_row);
+				focus_prev();
+			},
+			description: __('Select multiple list items'),
+			page: this.page
+		});
+
+		frappe.ui.keys.add_shortcut({
+			shortcut: 'enter',
+			action: () => {
+				let $list_row = get_list_row_if_focused();
+				if ($list_row) {
+					$list_row.find('a[data-name]')[0].click();
+					return true;
+				}
+				return false;
+			},
+			description: __('Open list item'),
+			page: this.page
+		});
+
+		frappe.ui.keys.add_shortcut({
+			shortcut: 'space',
+			action: () => {
+				let $list_row = get_list_row_if_focused();
+				if ($list_row) {
+					check_row($list_row);
+					return true;
+				}
+				return false;
+			},
+			description: __('Select list item'),
+			page: this.page
+		});
 	}
 
 	setup_filterable() {
@@ -875,7 +984,13 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 	}
 
 	setup_new_doc_event() {
-		this.$no_result.find('.btn-new-doc').click(() => this.make_new_doc());
+		this.$no_result.find('.btn-new-doc').click(() => {
+			if (this.settings.primary_action) {
+				this.settings.primary_action();
+			} else {
+				this.make_new_doc();
+			}
+		});
 	}
 
 	setup_tag_event() {
@@ -1068,20 +1183,23 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 						});
 					}
 				},
-				standard: true
+				standard: true,
+				shortcut: 'Ctrl+J',
 			});
 		}
 
 		items.push({
 			label: __('Toggle Sidebar'),
 			action: () => this.toggle_side_bar(),
-			standard: true
+			standard: true,
+			shortcut: 'Ctrl+K',
 		});
 
 		items.push({
 			label: __('Share URL'),
 			action: () => this.share_url(),
-			standard: true
+			standard: true,
+			shortcut: 'Ctrl+L',
 		});
 
 		if (frappe.user.has_role('System Manager') && frappe.boot.developer_mode === 1) {

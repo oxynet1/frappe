@@ -65,7 +65,7 @@ class PostgresDatabase(Database):
 
 	def get_connection(self):
 		# warnings.filterwarnings('ignore', category=psycopg2.Warning)
-		conn = psycopg2.connect('host={} dbname={} user={} password={} port={}'.format(
+		conn = psycopg2.connect("host='{}' dbname='{}' user='{}' password='{}' port={}".format(
 			self.host, self.user, self.user, self.password, self.port
 		))
 		conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT) # TODO: Remove this
@@ -111,13 +111,10 @@ class PostgresDatabase(Database):
 
 	def format_date(self, date):
 		if not date:
-			return '0001-01-01::DATE'
+			return '0001-01-01'
 
-		if isinstance(date, frappe.string_types):
-			if ':' not in date:
-				date = date + '::DATE'
-		else:
-			date = date.strftime('%Y-%m-%d') + '::DATE'
+		if not isinstance(date, frappe.string_types):
+			date = date.strftime('%Y-%m-%d')
 
 		return date
 

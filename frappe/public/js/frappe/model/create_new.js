@@ -90,7 +90,7 @@ $.extend(frappe.model, {
 		for(var fid=0;fid<docfields.length;fid++) {
 			var f = docfields[fid];
 			if(!in_list(frappe.model.no_value_type, f.fieldtype) && doc[f.fieldname]==null) {
-				var v = !f.depends_on || doc[f.depends_on] ? frappe.model.get_default_value(f, doc, parent_doc) : null;
+				var v = frappe.model.get_default_value(f, doc, parent_doc);
 				if(v) {
 					if(in_list(["Int", "Check"], f.fieldtype))
 						v = cint(v);
@@ -323,6 +323,12 @@ $.extend(frappe.model, {
 
 frappe.create_routes = {};
 frappe.new_doc = function (doctype, opts, init_callback) {
+	if (doctype === 'File') {
+		new frappe.ui.FileUploader({
+			folder: opts ? opts.folder : 'Home'
+		});
+		return;
+	}
 	return new Promise(resolve => {
 		if(opts && $.isPlainObject(opts)) {
 			frappe.route_options = opts;

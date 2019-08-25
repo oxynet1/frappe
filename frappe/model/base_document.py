@@ -175,10 +175,11 @@ class BaseDocument(object):
 		if not self.doctype:
 			return value
 		if not isinstance(value, BaseDocument):
-			if "doctype" not in value:
+			if "doctype" not in value or value['doctype'] is None:
 				value["doctype"] = self.get_table_field_doctype(key)
 				if not value["doctype"]:
 					raise AttributeError(key)
+
 			value = get_controller(value["doctype"])(value)
 			value.init_valid_columns()
 
@@ -209,11 +210,7 @@ class BaseDocument(object):
 			df = self.meta.get_field(fieldname)
 			if df:
 				if df.fieldtype=="Check":
-					if d[fieldname]==None:
-						d[fieldname] = 0
-
-					elif (not isinstance(d[fieldname], int) or d[fieldname] > 1):
-						d[fieldname] = 1 if cint(d[fieldname]) else 0
+					d[fieldname] = 1 if cint(d[fieldname]) else 0
 
 				elif df.fieldtype=="Int" and not isinstance(d[fieldname], int):
 					d[fieldname] = cint(d[fieldname])
