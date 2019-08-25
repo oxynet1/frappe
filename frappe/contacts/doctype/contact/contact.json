@@ -2,24 +2,36 @@
  "allow_events_in_timeline": 1,
  "allow_import": 1,
  "allow_rename": 1,
+<<<<<<< Updated upstream
 <<<<<<< HEAD
  "autoname": "field:pan_no",
 =======
 >>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
+=======
+ "autoname": "field:pan_no",
+>>>>>>> Stashed changes
  "creation": "2013-01-10 16:34:32",
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
  "field_order": [
   "contact_section",
+<<<<<<< Updated upstream
 <<<<<<< HEAD
   "pan_no",
   "salutation",
+=======
+  "type",
+  "pan_no",
+  "salutation",
+  "organization_name",
+>>>>>>> Stashed changes
   "first_name",
   "first_name_1",
   "middle_name",
   "last_name",
   "last_name_1",
+<<<<<<< Updated upstream
   "organization_name",
   "email_id",
   "user",
@@ -52,19 +64,45 @@
   "p_pin_code",
   "col_bk_01",
   "same_as_per",
+=======
+  "email_id",
+  "cb00",
+  "aadhar_card",
+  "status",
+  "dob",
+  "gender",
+  "phone",
+  "mobile_no",
+  "user",
+  "image",
+  "address_details_section",
+  "permanent_address_column",
+  "address",
+  "city",
+  "state",
+  "pin_code",
+  "correspondence_address_column",
+  "same_as_permanent",
+>>>>>>> Stashed changes
   "c_address",
   "c_city",
   "c_state",
   "c_pin_code",
+<<<<<<< Updated upstream
   "contact_details_section",
   "contact_detail",
 =======
 >>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
+=======
+  "sec_bk_contact",
+  "contact",
+>>>>>>> Stashed changes
   "contact_details",
   "is_primary_contact",
   "links",
   "more_info",
   "department",
+<<<<<<< Updated upstream
 <<<<<<< HEAD
   "designation",
   "column_break_17",
@@ -76,6 +114,11 @@
   "source",
   "google_contacts_description"
 >>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
+=======
+  "designation",
+  "column_break_17",
+  "unsubscribed"
+>>>>>>> Stashed changes
  ],
  "fields": [
   {
@@ -84,8 +127,11 @@
    "options": "fa fa-user"
   },
   {
+<<<<<<< Updated upstream
 <<<<<<< HEAD
    "depends_on": "eval:doc.type == \"Individual\"",
+=======
+>>>>>>> Stashed changes
    "fieldname": "first_name",
    "fieldtype": "Data",
    "hidden": 1,
@@ -96,6 +142,7 @@
   },
   {
    "bold": 1,
+<<<<<<< Updated upstream
    "depends_on": "eval:doc.type == \"Individual\"",
    "fieldname": "last_name",
    "fieldtype": "Data",
@@ -114,6 +161,11 @@
    "fieldname": "last_name",
    "fieldtype": "Data",
 >>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
+=======
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+>>>>>>> Stashed changes
    "label": "Last Name",
    "oldfieldname": "last_name",
    "oldfieldtype": "Data"
@@ -150,20 +202,28 @@
    "options": "Passive\nOpen\nReplied"
   },
   {
+<<<<<<< Updated upstream
 <<<<<<< HEAD
    "depends_on": "eval:doc.type == \"Individual\"",
 =======
 >>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
+=======
+   "depends_on": "eval:doc.type=='Individual'",
+>>>>>>> Stashed changes
    "fieldname": "salutation",
    "fieldtype": "Link",
    "label": "Salutation",
    "options": "Salutation"
   },
   {
+<<<<<<< Updated upstream
 <<<<<<< HEAD
    "depends_on": "eval:doc.type == \"Individual\"",
 =======
 >>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
+=======
+   "depends_on": "eval:doc.type=='Individual'",
+>>>>>>> Stashed changes
    "fieldname": "gender",
    "fieldtype": "Link",
    "label": "Gender",
@@ -240,6 +300,7 @@
    "label": "Unsubscribed"
   },
   {
+<<<<<<< Updated upstream
 <<<<<<< HEAD
    "fieldname": "pan_no",
    "fieldtype": "Data",
@@ -255,11 +316,15 @@
   },
   {
 >>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
+=======
+   "depends_on": "eval:doc.type=='Individual'",
+>>>>>>> Stashed changes
    "fieldname": "middle_name",
    "fieldtype": "Data",
    "label": "Middle Name"
   },
   {
+<<<<<<< Updated upstream
 <<<<<<< HEAD
    "fieldname": "type",
    "fieldtype": "Select",
@@ -282,6 +347,17 @@
    "fieldname": "dob",
    "fieldtype": "Date",
    "label": "DOB"
+=======
+   "fieldname": "aadhar_card",
+   "fieldtype": "Data",
+   "label": "Aadhar Card"
+  },
+  {
+   "depends_on": "eval:doc.type=='Individual'",
+   "fieldname": "dob",
+   "fieldtype": "Date",
+   "label": "Date Of Birth"
+>>>>>>> Stashed changes
   },
   {
    "fieldname": "address_details_section",
@@ -289,6 +365,7 @@
    "label": "Address Details"
   },
   {
+<<<<<<< Updated upstream
    "fieldname": "col_bk_01",
    "fieldtype": "Column Break",
    "label": "Correspondent Address"
@@ -300,22 +377,53 @@
   },
   {
    "fieldname": "p_city",
+=======
+   "fieldname": "permanent_address_column",
+   "fieldtype": "Column Break",
+   "label": "Permanent Address"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Data",
+   "label": "Address"
+  },
+  {
+   "fieldname": "city",
+>>>>>>> Stashed changes
    "fieldtype": "Data",
    "label": "City"
   },
   {
+<<<<<<< Updated upstream
    "fieldname": "p_state",
+=======
+   "fieldname": "state",
+>>>>>>> Stashed changes
    "fieldtype": "Data",
    "label": "State"
   },
   {
+<<<<<<< Updated upstream
    "fieldname": "p_pin_code",
+=======
+   "fieldname": "pin_code",
+>>>>>>> Stashed changes
    "fieldtype": "Data",
    "label": "Pin Code"
   },
   {
+<<<<<<< Updated upstream
    "fieldname": "c_address",
    "fieldtype": "Small Text",
+=======
+   "fieldname": "correspondence_address_column",
+   "fieldtype": "Column Break",
+   "label": "Correspondence Address"
+  },
+  {
+   "fieldname": "c_address",
+   "fieldtype": "Data",
+>>>>>>> Stashed changes
    "label": "Address"
   },
   {
@@ -331,6 +439,7 @@
   {
    "fieldname": "c_pin_code",
    "fieldtype": "Data",
+<<<<<<< Updated upstream
    "label": "Pin Code"
   },
   {
@@ -366,11 +475,30 @@
   },
   {
    "depends_on": "eval:doc.type == \"Individual\"",
+=======
+   "label": "Pin code"
+  },
+  {
+   "default": "0",
+   "fieldname": "same_as_permanent",
+   "fieldtype": "Check",
+   "label": "Same As Permanent Address"
+  },
+  {
+   "fieldname": "pan_no",
+   "fieldtype": "Data",
+   "label": "Pan Number",
+   "unique": 1
+  },
+  {
+   "depends_on": "eval:doc.type=='Individual'",
+>>>>>>> Stashed changes
    "fieldname": "first_name_1",
    "fieldtype": "Data",
    "label": "First Name"
   },
   {
+<<<<<<< Updated upstream
    "depends_on": "eval:doc.type == \"Individual\"",
    "fieldname": "last_name_1",
    "fieldtype": "Data",
@@ -381,11 +509,41 @@
    "fieldtype": "Small Text",
    "label": "Google Contacts Description"
 >>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
+=======
+   "depends_on": "eval:doc.type=='Individual'",
+   "fieldname": "last_name_1",
+   "fieldtype": "Data",
+   "label": "Last Name"
+  },
+  {
+   "depends_on": "eval:doc.type=='Company'",
+   "fieldname": "organization_name",
+   "fieldtype": "Data",
+   "label": "Organization Name"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "\nCompany\nIndividual"
+  },
+  {
+   "fieldname": "sec_bk_contact",
+   "fieldtype": "Section Break",
+   "label": "Contact Details"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "Table",
+   "label": "Contact",
+   "options": "Contact Details"
+>>>>>>> Stashed changes
   }
  ],
  "icon": "fa fa-user",
  "idx": 1,
  "image_field": "image",
+<<<<<<< Updated upstream
 <<<<<<< HEAD
  "is_submittable": 1,
  "modified": "2019-07-11 12:35:57.973643",
@@ -394,11 +552,17 @@
  "name": "Contact",
 =======
  "modified": "2019-06-14 20:35:45.300869",
+=======
+ "modified": "2019-06-14 14:52:43.315243",
+>>>>>>> Stashed changes
  "modified_by": "Administrator",
  "module": "Contacts",
  "name": "Contact",
  "name_case": "Title Case",
+<<<<<<< Updated upstream
 >>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
+=======
+>>>>>>> Stashed changes
  "owner": "Administrator",
  "permissions": [
   {
@@ -524,6 +688,7 @@
    "role": "All"
   }
  ],
+<<<<<<< Updated upstream
  "sort_field": "modified",
 <<<<<<< HEAD
  "sort_order": "ASC",
@@ -531,4 +696,7 @@
 =======
  "sort_order": "ASC"
 >>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
+=======
+ "sort_order": "ASC"
+>>>>>>> Stashed changes
 }
