@@ -16,16 +16,12 @@
   "full_name",
   "send_welcome_email",
   "unsubscribed",
-<<<<<<< HEAD
   "user_designation",
-=======
->>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
   "column_break0",
   "username",
   "language",
   "time_zone",
   "user_image",
-<<<<<<< HEAD
   "user_qr_code",
   "user_status",
   "user_password",
@@ -33,8 +29,6 @@
   "reporting_manager",
   "data_22",
   "reporting_manager_name",
-=======
->>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
   "sb1",
   "role_profile_name",
   "roles_html",
@@ -67,12 +61,9 @@
   "email_signature",
   "email_inbox",
   "user_emails",
-<<<<<<< HEAD
   "background",
   "background_image",
   "background_style",
-=======
->>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
   "sb_allow_modules",
   "modules_html",
   "block_modules",
@@ -292,11 +283,7 @@
   {
    "fieldname": "interest",
    "fieldtype": "Small Text",
-<<<<<<< HEAD
    "label": "Interest"
-=======
-   "label": "Interests"
->>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
   },
   {
    "fieldname": "bio",
@@ -425,7 +412,6 @@
    "permlevel": 1
   },
   {
-<<<<<<< HEAD
    "collapsible": 1,
    "depends_on": "enabled",
    "fieldname": "background",
@@ -444,8 +430,6 @@
    "options": "Fill Screen\nTile"
   },
   {
-=======
->>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
    "collapsible": 1,
    "fieldname": "sb_allow_modules",
    "fieldtype": "Section Break",
@@ -632,7 +616,6 @@
    "fieldtype": "Password",
    "label": "API Secret",
    "read_only": 1
-<<<<<<< HEAD
   },
   {
    "fieldname": "user_qr_code",
@@ -675,19 +658,13 @@
    "fieldname": "reporting_manager_name",
    "fieldtype": "Data",
    "label": "Reporting Manager Name"
-=======
->>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
   }
  ],
  "icon": "fa fa-user",
  "idx": 413,
  "image_field": "user_image",
  "max_attachments": 5,
-<<<<<<< HEAD
  "modified": "2019-08-02 11:02:05.049568",
-=======
- "modified": "2019-08-09 10:34:56.912283",
->>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
