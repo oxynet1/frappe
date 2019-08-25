@@ -1068,7 +1068,6 @@ def generate_keys(user):
 		user_details.save()
 
 		return {"api_secret": api_secret}
-<<<<<<< HEAD
 	frappe.throw(frappe._("Not Permitted"), frappe.PermissionError)
 
 @frappe.whitelist()
@@ -1078,6 +1077,4 @@ def update_profile_info(profile_info):
 	user.update(profile_info)
 	user.save()
 	return user
-=======
 	frappe.throw(frappe._("Not Permitted"), frappe.PermissionError)
->>>>>>> 5f389b8db12c952cb116c852d5779ff5e9fe8b4d
