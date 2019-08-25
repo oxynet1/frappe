@@ -2,61 +2,30 @@
    "allow_events_in_timeline": 1,
    "allow_import": 1,
    "allow_rename": 1,
-   "autoname": "field:pan_no",
    "creation": "2013-01-10 16:34:32",
    "doctype": "DocType",
    "document_type": "Setup",
    "engine": "InnoDB",
    "field_order": [
       "contact_section",
-      "pan_no",
-      "salutation",
-      "type",
-      "organization_name",
       "first_name",
       "middle_name",
       "last_name",
       "email_id",
-      "aadhar_card",
       "user",
       "cb00",
       "status",
+      "salutation",
       "designation",
       "gender",
       "phone",
       "mobile_no",
       "image",
-      "address_details_section",
-      "col_bk_02",
-      "p_address",
-      "p_city",
-      "p_state",
-      "p_pin_code",
-      "col_bk_01",
-      "same_as_per",
-      "address_details_section",
-      "permanent_address_column",
-      "address",
-      "city",
-      "state",
-      "pin_code",
-      "correspondence_address_column",
-      "same_as_permanent",
-      "c_address",
-      "c_city",
-      "c_state",
-      "c_pin_code",
-      "contact_details_section",
-      "contact_detail",
-      "sec_bk_contact",
-      "contact",
       "contact_details",
       "is_primary_contact",
       "links",
       "more_info",
       "department",
-      "designation",
-      "column_break_17",
       "unsubscribed",
       "column_break_17",
       "source",
@@ -69,21 +38,18 @@
          "options": "fa fa-user"
       },
       {
-         "depends_on": "eval:doc.type == \"Individual\"",
          "fieldname": "first_name",
          "fieldtype": "Data",
-         "hidden": 1,
          "in_global_search": 1,
          "label": "First Name",
          "oldfieldname": "first_name",
-         "oldfieldtype": "Data"
+         "oldfieldtype": "Data",
+         "reqd": 1
       },
       {
          "bold": 1,
-         "depends_on": "eval:doc.type == \"Individual\"",
          "fieldname": "last_name",
          "fieldtype": "Data",
-         "hidden": 1,
          "label": "Last Name",
          "oldfieldname": "last_name",
          "oldfieldtype": "Data"
@@ -120,14 +86,12 @@
          "options": "Passive\nOpen\nReplied"
       },
       {
-         "depends_on": "eval:doc.type == \"Individual\"",
          "fieldname": "salutation",
          "fieldtype": "Link",
          "label": "Salutation",
          "options": "Salutation"
       },
       {
-         "depends_on": "eval:doc.type == \"Individual\"",
          "fieldname": "gender",
          "fieldtype": "Link",
          "label": "Gender",
@@ -204,177 +168,30 @@
          "label": "Unsubscribed"
       },
       {
-         "fieldname": "pan_no",
-         "fieldtype": "Data",
-         "label": "Pan no",
-         "unique": 1
-      },
-      {
-         "depends_on": "eval:doc.type == \"Individual\"",
          "fieldname": "source",
          "fieldtype": "Data",
          "label": "Source"
       },
       {
-         "depends_on": "eval:doc.type=='Individual'",
          "fieldname": "middle_name",
          "fieldtype": "Data",
          "label": "Middle Name"
       },
       {
-         "fieldname": "type",
-         "fieldtype": "Select",
-         "label": "Lead Type",
-         "options": "\nIndividual\nCompany"
-      },
-      {
-         "depends_on": "eval:doc.type == \"Company\"",
-         "fieldname": "organization_name",
-         "fieldtype": "Data",
-         "label": "Organization Name"
-      },
-      {
-         "fieldname": "aadhar_card_no",
-         "fieldtype": "Data",
-         "label": "Aadhar Card No"
-      },
-      {
-         "depends_on": "eval:doc.type == \"Individual\"",
-         "fieldname": "dob",
-         "fieldtype": "Date",
-         "label": "DOB"
-      },
-      {
-         "depends_on": "eval:doc.type=='Individual'",
-         "fieldname": "dob",
-         "fieldtype": "Date",
-         "label": "Date Of Birth"
-      },
-      {
-         "fieldname": "address_details_section",
-         "fieldtype": "Section Break",
-         "label": "Address Details"
-      },
-      {
-         "fieldname": "col_bk_01",
-         "fieldtype": "Column Break",
-         "label": "Correspondent Address"
-      },
-      {
-         "fieldname": "p_address",
+         "depends_on": "eval:doc.source==\"Google Contacts\"",
+         "fieldname": "google_contacts_description",
          "fieldtype": "Small Text",
-         "label": "Address"
-      },
-      {
-         "fieldname": "p_city",
-         "fieldtype": "Data",
-         "label": "City"
-      },
-      {
-         "fieldname": "p_state",
-         "fieldtype": "Data",
-         "label": "State"
-      },
-      {
-         "fieldname": "p_pin_code",
-         "fieldtype": "Data",
-         "label": "Pin Code"
-      },
-      {
-         "fieldname": "c_address",
-         "fieldtype": "Small Text",
-         "label": "Address"
-      },
-      {
-         "fieldname": "c_city",
-         "fieldtype": "Data",
-         "label": "City"
-      },
-      {
-         "fieldname": "c_state",
-         "fieldtype": "Data",
-         "label": "State"
-      },
-      {
-         "fieldname": "c_pin_code",
-         "fieldtype": "Data",
-         "label": "Pin Code"
-      },
-      {
-         "fieldname": "col_bk_02",
-         "fieldtype": "Column Break",
-         "label": "Permanent Address"
-      },
-      {
-         "default": "0",
-         "fieldname": "same_as_per",
-         "fieldtype": "Check",
-         "label": "Same As Permanent"
-      },
-      {
-         "fieldname": "amended_from",
-         "fieldtype": "Link",
-         "label": "Amended From",
-         "no_copy": 1,
-         "options": "Contact",
-         "print_hide": 1,
-         "read_only": 1
-      },
-      {
-         "fieldname": "contact_details_section",
-         "fieldtype": "Section Break",
-         "label": "Contact Details"
-      },
-      {
-         "fieldname": "contact_detail",
-         "fieldtype": "Table",
-         "label": "Contact Detail",
-         "options": "Contact Details"
-      },
-      {
-         "depends_on": "eval:doc.type == \"Individual\"",
-         "fieldname": "first_name_1",
-         "fieldtype": "Data",
-         "label": "First Name"
-      },
-      {
-         "depends_on": "eval:doc.type == \"Individual\"",
-         "fieldname": "last_name_1",
-         "fieldtype": "Data",
-         "label": "Last Name"
-      },
-      {
-         "depends_on": "eval:doc.type=='Company'",
-         "fieldname": "organization_name",
-         "fieldtype": "Data",
-         "label": "Organization Name"
-      },
-      {
-         "fieldname": "type",
-         "fieldtype": "Select",
-         "label": "Type",
-         "options": "\nCompany\nIndividual"
-      },
-      {
-         "fieldname": "sec_bk_contact",
-         "fieldtype": "Section Break",
-         "label": "Contact Details"
-      },
-      {
-         "fieldname": "contact",
-         "fieldtype": "Table",
-         "label": "Contact",
-         "options": "Contact Details"
+         "label": "Google Contacts Description"
       }
    ],
    "icon": "fa fa-user",
    "idx": 1,
    "image_field": "image",
-   "is_submittable": 1,
-   "modified": "2019-07-11 12:35:57.973643",
+   "modified": "2019-06-14 20:35:45.300869",
    "modified_by": "Administrator",
    "module": "Contacts",
    "name": "Contact",
+   "name_case": "Title Case",
    "owner": "Administrator",
    "permissions": [
       {
@@ -501,6 +318,5 @@
       }
    ],
    "sort_field": "modified",
-   "sort_order": "ASC",
-   "title_field": "pan_no"
+   "sort_order": "ASC"
 }
